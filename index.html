@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster | The Ultimate Trivia Challenge</title>
+    <meta name="description" content="Test your knowledge with QuizMaster, the most stunning and challenging general knowledge quiz game.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Background Elements -->
+        <div class="bg-glow"></div>
+        <div class="particles" id="particles"></div>
+
+        <!-- Brainrot Unlock Modal -->
+        <div id="unlock-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="glitch" data-text="WARNING: BRAINROT">WARNING: BRAINROT</h2>
+                <p>Prove your commitment. Type "brainrot" 10 times below.</p>
+                <div id="unlock-counter" class="unlock-counter">0/10</div>
+                <input type="text" id="unlock-input" placeholder="Type here...">
+                <div class="modal-btns">
+                    <button id="cancel-unlock" class="secondary-btn">ABORT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hint System Modal -->
+        <div id="hint-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="glitch" data-text="REQUEST HINT">REQUEST HINT</h2>
+                <p>To receive digital assistance, type the magic phrase 5 times:</p>
+                <p class="hint-phrase">"i want a hint prety pls"</p>
+                <div id="hint-counter" class="unlock-counter">0/5</div>
+                <input type="text" id="hint-input" placeholder="Type here...">
+                <div class="modal-btns">
+                    <button id="cancel-hint" class="secondary-btn">NEVERMIND</button>
+                </div>
+            </div>
+        </div>
+
+        <main class="container">
+            <!-- Start Screen -->
+            <section id="start-screen" class="screen active">
+                <div class="hero">
+                    <h1 class="glitch" data-text="QUIZMASTER">QUIZMASTER</h1>
+                    <p class="subtitle">Elevate your intellect with the ultimate trivia experience.</p>
+                </div>
+                
+                <div class="setup-box">
+                    <div class="form-group">
+                        <label for="category">Select Category</label>
+                        <select id="category">
+                            <optgroup label="General">
+                                <option value="9">General Knowledge</option>
+                                <option value="22">Geography</option>
+                                <option value="21">Sports</option>
+                            </optgroup>
+                            
+                            <optgroup label="Arts & Literature">
+                                <option value="architecture">Arts: Architecture</option>
+                                <option value="literature">Arts: Classic Literature</option>
+                            </optgroup>
+
+                            <optgroup label="Entertainment">
+                                <option value="11">Entertainment: Film</option>
+                                <option value="12">Entertainment: Music</option>
+                                <option value="radiohead">Entertainment: Music (Radiohead)</option>
+                                <option value="ghibli">Entertainment: Studio Ghibli</option>
+                                <option value="brainrot">Entertainment: Brainrot (SECRET)</option>
+                            </optgroup>
+
+                            <optgroup label="Gaming">
+                                <option value="geodash">Gaming: Geometry Dash</option>
+                                <option value="subnautica">Gaming: Subnautica</option>
+                                <option value="gaming">Gaming: Video Game History</option>
+                            </optgroup>
+
+                            <optgroup label="History">
+                                <option value="90s">History: 90s Nostalgia</option>
+                                <option value="mythology">History: Ancient Mythology</option>
+                                <option value="23">History: General</option>
+                            </optgroup>
+
+                            <optgroup label="Lifestyle">
+                                <option value="culinary">Lifestyle: Culinary Arts</option>
+                                <option value="icecream">Lifestyle: Ice Cream Flavors</option>
+                            </optgroup>
+
+                            <optgroup label="Nature & Science">
+                                <option value="astrology">Science: Astrology</option>
+                                <option value="weather">Science: Extreme Weather</option>
+                                <option value="marine">Nature: Marine Biology</option>
+                                <option value="17">Science: Nature (General)</option>
+                                <option value="space">Science: Space Exploration</option>
+                            </optgroup>
+
+                            <optgroup label="Technology">
+                                <option value="3dprinting">Tech: 3D Printing</option>
+                                <option value="ai">Tech: Artificial Intelligence</option>
+                                <option value="18">Tech: Computers</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="difficulty">Select Difficulty</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <button id="start-btn" class="primary-btn">INITIALIZE SYSTEM</button>
+                </div>
+            </section>
+
+            <!-- Quiz Screen -->
+            <section id="quiz-screen" class="screen">
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="label">PROGRESS</span>
+                        <div class="progress-container">
+                            <div id="progress-bar" class="progress-fill"></div>
+                        </div>
+                        <span id="question-counter">1/10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">SCORE</span>
+                        <span id="score-display">0</span>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="timer-ring">
+                        <svg>
+                            <circle cx="32" cy="32" r="28"></circle>
+                            <circle id="timer-progress" cx="32" cy="32" r="28"></circle>
+                        </svg>
+                        <span id="timer-text">15</span>
+                    </div>
+                    
+                    <div id="question-text" class="question-text">
+                        Loading challenge...
+                    </div>
+
+                    <div id="options-container" class="options-grid">
+                        <!-- Options will be injected here -->
+                    </div>
+
+                    <div class="hint-section">
+                        <button id="hint-btn" class="hint-trigger">NEED A HINT?</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Result Screen -->
+            <section id="result-screen" class="screen">
+                <div class="result-header">
+                    <h2 id="result-title">MISSION COMPLETE</h2>
+                    <div class="final-score-box">
+                        <span class="label">FINAL PERFORMANCE</span>
+                        <div id="final-score" class="score-value">0%</div>
+                    </div>
+                </div>
+
+                <div class="result-stats">
+                    <div class="mini-stat">
+                        <span class="label">CORRECT</span>
+                        <span id="correct-count">0</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="label">STREAK</span>
+                        <span id="best-streak">0</span>
+                    </div>
+                </div>
+
+                <button id="restart-btn" class="secondary-btn">REBOOT SYSTEM</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
