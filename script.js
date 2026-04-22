@@ -42,7 +42,11 @@ const elements = {
     hintBtn: document.getElementById('hint-btn'),
     hintModal: document.getElementById('hint-modal'),
     hintInput: document.getElementById('hint-input'),
-    cancelHint: document.getElementById('cancel-hint')
+    cancelHint: document.getElementById('cancel-hint'),
+    secretTrigger: document.getElementById('secret-trigger'),
+    secretModal: document.getElementById('secret-modal'),
+    secretInput: document.getElementById('secret-input'),
+    cancelSecret: document.getElementById('cancel-secret')
 };
 
 let unlockState = {
@@ -131,6 +135,34 @@ function init() {
         elements.hintModal.classList.remove('active');
         startTimer(); // Resume the timer
     });
+
+    // Secret Logic
+    elements.secretTrigger.addEventListener('click', () => {
+        elements.secretModal.classList.add('active');
+        elements.secretInput.value = '';
+        elements.secretInput.focus();
+    });
+
+    elements.secretInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const code = e.target.value.trim().toLowerCase();
+            if (code === '67') {
+                elements.secretModal.classList.remove('active');
+                startQuiz('secret67');
+            } else if (code === 'the one piece is real!!!') {
+                elements.secretModal.classList.remove('active');
+                startQuiz('onepiece');
+            } else {
+                e.target.value = '';
+                e.target.placeholder = 'INVALID CODE';
+                setTimeout(() => { e.target.placeholder = 'CODE?'; }, 1000);
+            }
+        }
+    });
+
+    elements.cancelSecret.addEventListener('click', () => {
+        elements.secretModal.classList.remove('active');
+    });
 }
 
 function applyHint() {
@@ -210,11 +242,13 @@ const CUSTOM_CATEGORY_MAP = {
     'weather': WEATHER_QUESTIONS,
     'ai': AI_QUESTIONS,
     'brainrot': BRAINROT_QUESTIONS,
-    'architecture': ARCHITECTURE_QUESTIONS
+    'architecture': ARCHITECTURE_QUESTIONS,
+    'secret67': SECRET_67_QUESTIONS,
+    'onepiece': ONE_PIECE_QUESTIONS
 };
 
-async function startQuiz() {
-    const category = elements.category.value;
+async function startQuiz(forcedCategory = null) {
+    const category = forcedCategory || elements.category.value;
     const difficulty = elements.difficulty.value;
     
     elements.startBtn.innerText = 'CALIBRATING...';
